@@ -1,0 +1,979 @@
+{
+	"info": {
+		"_postman_id": "a6e3bbc6-7c3b-4404-851c-f4683e0aa64c",
+		"name": "Shield DMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Request OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c403d435-e3b4-4671-a97b-688254a2af40",
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"if(response.data !== null)",
+									"{",
+									"    postman.setEnvironmentVariable(\"key\", response.data.key);",
+									"    postman.setEnvironmentVariable(\"otp\", response.data.otp);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phoneNo",
+									"value": "+9591112223445",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/users/requestOTP",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"requestOTP"
+							],
+							"query": [
+								{
+									"key": "phoneNo",
+									"value": "+959123456787",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Nay Myo\",\r\n    \"dob\":\"2000-05-11\",\r\n    \"phoneNo\":\"+9591112223445\",\r\n    \"password\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/users/register?key={{key}}&otp={{otp}}",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"register"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "otp",
+									"value": "{{otp}}"
+								},
+								{
+									"key": "otp",
+									"value": "8772",
+									"disabled": true
+								},
+								{
+									"key": "key",
+									"value": "5df83cc2-e184-4e62-9f28-f9f1d6b6429f",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "185071ec-bca0-495c-8a41-a9c698f7ecb2",
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"if(response.data !== null)\r",
+									"{\r",
+									"    postman.setEnvironmentVariable(\"userToken\", response.data.token.accessToken);\r",
+									"    postman.setEnvironmentVariable(\"refreshToken\",response.data.token.refreshToken);\r",
+									"    postman.setEnvironmentVariable(\"userId\",response.data.user.id);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "phoneNo",
+									"value": "+959123456789",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "654321",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/users/login",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "mm",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/XANN016/Pictures/PanSoDann/LRM_EXPORT_269537462285352_20200726_204737387.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/users/1/images",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "mm"
+							}
+						],
+						"url": {
+							"raw": "{{api}}/users/1/images",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "mm",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "oldPassword",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "newPassword",
+									"value": "654321",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/users/1/changePassword",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"changePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "35a93976-a445-4f61-bca3-fffb53df0759",
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"if(response.data !== null)\r",
+									"{\r",
+									"    postman.setEnvironmentVariable(\"key\", response.data.key);\r",
+									"    postman.setEnvironmentVariable(\"otp\", response.data.otp);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "mm"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phoneNo",
+									"value": "+959123456789",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/users/forgotPassword",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"forgotPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "mm"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phoneNo",
+									"value": "+959123456789",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "key",
+									"value": "{{key}}",
+									"type": "text"
+								},
+								{
+									"key": "otp",
+									"value": "{{otp}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/users/resetPassword",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"resetPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Phone Number",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "00b16183-b8b6-4d4d-a71e-a9d4128225b9",
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"if(response.data !== null)\r",
+									"{\r",
+									"    postman.setEnvironmentVariable(\"key\", response.data.key);\r",
+									"    postman.setEnvironmentVariable(\"otp\", response.data.otp);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "mm"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phoneNo",
+									"value": "+959123456789",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/users/1/verifyPhoneNumber",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"verifyPhoneNumber"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Phone Number",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "mm"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phoneNo",
+									"value": "+959123456789",
+									"type": "text"
+								},
+								{
+									"key": "key",
+									"value": "{{key}}",
+									"type": "text"
+								},
+								{
+									"key": "otp",
+									"value": "{{otp}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/users/1/changePhoneNumber",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"changePhoneNumber"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "mm",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api}}/users/1",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By Role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "mm"
+							}
+						],
+						"url": {
+							"raw": "{{api}}/users?role=အသုံးပြုသူ",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "အသုံးပြုသူ"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Nay Myo\",\r\n    \"phoneNo\":\"+959111222334\",\r\n    \"password\":\"222222\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/users/1",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Address",
+			"item": [
+				{
+					"name": "Update address to primary",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "mm",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api}}/users/1/addresses/2",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"addresses",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Addresses by User Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "mm",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api}}/users/1/addresses",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update address",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "mm",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"label\": \"Work\",\r\n    \"ward\": \"Aung Min\",\r\n    \"street\": \"50\",\r\n    \"buildingType\": \"Shop\",\r\n    \"buildingNo\": \"206\",\r\n    \"floor\": 5,\r\n    \"latitude\": null,\r\n    \"longitude\": null,\r\n    \"township\": {\r\n        \"id\": 1,\r\n        \"name\": \"မင်္ဂလာဒုံ\",\r\n        \"deliveryFee\": 2500.0\r\n    },\r\n    \"division\": {\r\n        \"id\": 14,\r\n        \"name\": \"ရန်ကုန်တိုင်းဒေသကြီး\"\r\n    },\r\n    \"primary\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/users/1/addresses/1",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"addresses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Address by User Id and Address Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "mm",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api}}/users/1/addresses/1",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"addresses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Address by User Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "mm",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": null,\r\n    \"label\": \"Other\",\r\n    \"ward\": \"Thi Dar Aye\",\r\n    \"street\": \"50 street\",\r\n    \"buildingType\": \"Private House\",\r\n    \"buildingNo\": \"106\",\r\n    \"floor\": null,\r\n    \"latitude\": null,\r\n    \"longitude\": null,\r\n    \"township\": {\r\n        \"id\": 6,\r\n        \"name\": \"မရမ်းကုန်\",\r\n        \"deliveryFee\": 1500.0\r\n    },\r\n    \"division\": {\r\n        \"id\": 14,\r\n        \"name\": \"ရန်ကုန်တိုင်းဒေသကြီး\"\r\n    },\r\n    \"primary\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/users/1/addresses",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Type",
+			"item": [
+				{
+					"name": "Get building types",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "eng",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": null,\r\n    \"label\": \"အခြား\",\r\n    \"ward\": \"Thi Dar Aye\",\r\n    \"street\": \"50 street\",\r\n    \"buildingType\": \"လုံးချင်းအိမ်\",\r\n    \"buildingNo\": \"106\",\r\n    \"floor\": null,\r\n    \"latitude\": null,\r\n    \"longitude\": null,\r\n    \"township\": {\r\n        \"id\": 6,\r\n        \"name\": \"မရမ်းကုန်\",\r\n        \"deliveryFee\": 1500.0\r\n    },\r\n    \"division\": {\r\n        \"id\": 14,\r\n        \"name\": \"ရန်ကုန်တိုင်းဒေသကြီး\"\r\n    },\r\n    \"primary\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/buildingTypes",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"buildingTypes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get address labels",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "mm",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": null,\r\n    \"label\": \"အခြား\",\r\n    \"ward\": \"Thi Dar Aye\",\r\n    \"street\": \"50 street\",\r\n    \"buildingType\": \"လုံးချင်းအိမ်\",\r\n    \"buildingNo\": \"106\",\r\n    \"floor\": null,\r\n    \"latitude\": null,\r\n    \"longitude\": null,\r\n    \"township\": {\r\n        \"id\": 6,\r\n        \"name\": \"မရမ်းကုန်\",\r\n        \"deliveryFee\": 1500.0\r\n    },\r\n    \"division\": {\r\n        \"id\": 14,\r\n        \"name\": \"ရန်ကုန်တိုင်းဒေသကြီး\"\r\n    },\r\n    \"primary\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/addressLabels",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"addressLabels"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
